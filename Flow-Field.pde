@@ -1,10 +1,9 @@
 int RAD = 10, step = 0;
-float PERLIN_SCALE = 0.015, VARIANCE = 4, SIDE = 0.2;
+float PERLIN_SCALE = 0.015, TIME_SCALE = 0.002, VARIANCE = 4, SIDE = 0.2;
 ArrayList<Dot> dots = new ArrayList<Dot>();
 
 void setup(){
   size(960, 600);
-  //noFill();
   for (int i = 0; i < 2000; i++){
     PVector pos = new PVector(random(width), random(height));
     float angle = random(TWO_PI);
@@ -29,7 +28,8 @@ void draw(){
   }
   
   // Draw dots
-  stroke(255, 182, 193);
+  fill(255, 182, 193);
+  noStroke();
   for (Dot d : dots){
     d.step(getForce(d.getPos()));
     d.draw();
@@ -46,7 +46,7 @@ public float getAngle(float x, float y){
   float ans = -PI*(VARIANCE-2)/2;  // So that it is biased towards the right
   for (int i = 0; i < 2; i++){
     float newY = y - i*height;
-    ans += VARIANCE*PI*noise(x*PERLIN_SCALE, newY*PERLIN_SCALE, step*0.002)*abs(newY)/height;
+    ans += VARIANCE*PI*noise(x*PERLIN_SCALE, newY*PERLIN_SCALE, step*TIME_SCALE)*abs(newY)/height;
   }
   return ans;
 }
